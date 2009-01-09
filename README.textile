@@ -1,0 +1,68 @@
+h3. BlackMagic Ticket Tweaks Plugin
+
+Trac in 0.11 provided us with this incredibly powerful and terrible bit of dark power -- the ability to apply Genshi Transformers to the templates before they hit the user. The power is awesome; and with this plugin I have abused that power for evil purposes. 
+
+This is a copy of the BlackMagic Ticket Tweaks Plugin with some additions and bug fixes
+
+<a href="http://trac-hacks.org/wiki/BlackMagicTicketTweaksPlugin">http://trac-hacks.org/wiki/BlackMagicTicketTweaksPlugin</a>
+
+Basically, the plugin adds the ability to tweak any of the Ticket fields-- be they custom or standard-- in the following ways:
+
+* disable - The field won't be editable.
+* hide - The field will simply be invisible.
+* label - Rename a field... in particular one of the built-in fields.
+* notice - Add a small notice below a field.
+* tip - Provide a pretty java-script tooltip when the control overs over the field. (Useful, for example, to give people a reminder for the difference between 'priority' and 'severity'
+* permission - Set a permission that is required to edit that specific field. This is particularly useful in an environment where you let users set severity-- so they need @TICKET_CHGPROP@-- but you only want certain people to be able to edit the Priority. 
+* ondenial - What to do when a denial happens: hide or disable
+
+It also adds some CSS classes to the items that are modified so we can style them easier.
+
+
+h3. Installing
+
+@sudo python setup.py install@
+
+Add this to your @trac.ini@ file
+
+<pre>[components]
+blackmagic.* = enabled</pre>
+
+
+<pre>[blackmagic]
+tweaks = cc, priority, severity</pre>
+
+
+<pre>[blackmagic]
+tweaks = priority
+priority.permission = TRAC_ADMIN</pre>
+
+
+<pre>[blackmagic]
+permissions = TICKET_CHG_PRIORITY, TICKET_CHG_CC</pre>
+
+
+
+h3. Example
+
+<pre>[blackmagic]
+permissions = MY_DEV
+tweaks = milestone, version, description, summary, keywords, priority, owner, targetversion
+
+targetversion.permission = MY_DEV
+targetversion.label = To Be Fixed in Version
+
+milestone.permission = MY_DEV
+milestone.label = To Be Fixed in Version
+
+owner.permission = MY_DEV
+
+priority.permission = MY_DEV
+
+description.notice = Be sure to add code sample file or link to live page for functional bugs
+
+version.label = Observed in Version
+version.notice = Specify version of library in which issue occurs
+
+keywords.label = Tags
+</pre>
